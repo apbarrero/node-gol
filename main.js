@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 const e = require('./conway_engine.js');
 
-let g = new e.Grid(20, 20);
-g.set(0, 1);
-g.set(0, 19);
-g.set(18, 19);
+const rand_bool = ()=>Math.random() < 0.5;
+const W = 60, H = 30;
+let g = new e.Grid(W, H);
+for (var i = 0; i < W; i++)
+    for (var j = 0; j < H; j++)
+        if (rand_bool()) g.set(i, j);
+const clear_scr = ()=>process.stdout.write('\033[2J');
+
+clear_scr();
 g.print();
-console.log(g.neighbours(3, 3), g.live_neighbours_count(3, 3));
-console.log(g.neighbours(1, 1), g.live_neighbours_count(1, 1));
-console.log(g.neighbours(0, 2), g.live_neighbours_count(0, 2));
-console.log(g.neighbours(0, 2), g.live_neighbours_count(0, 2));
-console.log(g.neighbours(0, 0), g.live_neighbours_count(0, 0));
+setInterval(()=>{
+    clear_scr();
+    g.tick();
+    g.print();
+}, 1000);
